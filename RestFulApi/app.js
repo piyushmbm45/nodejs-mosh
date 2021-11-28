@@ -13,8 +13,9 @@ app.get('/api/courses',(req,res)=>{
 })
 
 app.get('/api/courses/:id', (req,res)=>{
-    const courseId = req.params.id;
-    res.send(courseId);
+    const queryParams = req.query;
+    const courseId = req.params;
+    res.send({courseId, queryParams});
 })
 
 app.listen(port, () => console.log(`listening on Port ${port}`));
