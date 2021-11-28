@@ -1,4 +1,4 @@
-const { application } = require("express");
+const Joi = require('joi');
 const express = require("express");
 const port = process.env.PORT || 3000;
 
@@ -27,9 +27,15 @@ app.get("/api/courses/:id", (req, res) => {
 });
 
 app.post('/api/courses',(req,res)=>{
-    if(!req.body.name || req.body.name.length <3){
+
+    const schema = Joi.object({
+        name : Joi.string().min(3).required()
+    });
+    const result = schema.validate(req.body)
+    console.log(result);
+    if(result.error){
         // 400 bad request
-        res.status(400).send('Name is Required and should be more than 3 char')
+        res.status(400).send(result.error.details[0].message)
         return;
     }
     const newCourse = {
